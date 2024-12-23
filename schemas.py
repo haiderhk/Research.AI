@@ -8,10 +8,10 @@ from langgraph.graph.message import MessagesState
 
 
 class Analyst(BaseModel):
-    affiliation: str = Field("Primary affiliation of the analyst.")
-    name: str = Field("Name of the analyst.")
-    role: str = Field("Role of the analyst in the context of the topic.")
-    description: str = Field("Description of the analyst's focus, concerns, and motives")
+    affiliation: str = Field(description = "Primary affiliation of the analyst.")
+    name: str = Field(description = "Name of the analyst.")
+    role: str = Field(description = "Role of the analyst in the context of the topic.")
+    description: str = Field(description = "Description of the analyst's focus, concerns, and motives")
 
     @property
     def persona(self) -> str:
@@ -20,7 +20,7 @@ class Analyst(BaseModel):
 
 
 class Perspectives(BaseModel):
-    analysts: List[Analyst] = Field("Comprehensive list of all analysts with their roles and affiliations.")
+    analysts: List[Analyst] = Field(description = "Comprehensive list of all analysts with their roles and affiliations.")
 
 
 
@@ -41,3 +41,14 @@ class InterviewState(MessagesState):
 class SearchQuery(BaseModel):
     search_query: str = Field(None, description = "Search query for retrieval")
 
+
+class ResearchGraphState(TypedDict):
+    topic: str
+    max_analysts: int
+    human_analyst_feedback: str #Human feedback for human-in-the-loop
+    analysts: List[Analyst]
+    sections: Annotated[List, operator.add] # For compiling all sections from different analysts.
+    introduction: str # Introduction for the final compiled report
+    content: str
+    conclusion: str
+    final_report: str

@@ -1,9 +1,14 @@
 from utils import save_markdown
 from interview_graph import interview_graph
-from create_analysts_graph import create_analysts_graph
+from schemas import ResearchGraphState
+# from create_analysts_graph import create_analysts_graph
+from research_assistant_graph import research_assistant_graph
 
 from IPython.display import Markdown
 from langchain_core.messages import HumanMessage
+from langgraph.constants import Send
+
+
 
 
 max_analysts = 3
@@ -11,7 +16,7 @@ topic = input("Enter area of research: ")
 
 thread = {"configurable": {"thread_id": "1"}}
 
-for event in create_analysts_graph.stream({
+for event in research_assistant_graph.stream({
     "topic": topic,
     "max_analysts": max_analysts,
 }, thread, stream_mode = "values"):
@@ -26,7 +31,7 @@ for event in create_analysts_graph.stream({
 human_analyst_feedback = input("Would you like to update any of the analysts? (Type \"no\" to exit) ")
 
 if human_analyst_feedback.lower() != "no":
-    create_analysts_graph.invoke({"human_analyst_feedback": human_analyst_feedback}, thread)
+    research_assistant_graph.invoke({"human_analyst_feedback": human_analyst_feedback}, thread)
     # for event in create_analysts_graph.stream({
     #     "human_analyst_feedback": human_analyst_feedback
     # }, thread, stream_mode = "values"):
@@ -38,24 +43,35 @@ if human_analyst_feedback.lower() != "no":
 # else:
 #     create_analysts_graph.invoke(None, thread)
 
-final_state = create_analysts_graph.get_state(thread)
-analysts = final_state.values.get("analysts")
 
-print("\n\n\t\t***** FINAL ANALYSTS *****\n")
-for analyst in analysts:
-    print(analyst.persona)
-
-
-conduct_interview_message = HumanMessage(f"So you said you were writing an article on {topic}?")
-messages = [conduct_interview_message]
+for event in research_assistant_graph.stream(None, thread, stream_mode="updates"):
+    print("--Node--")
+    node_name = next(iter(event.keys()))
+    print(node_name)
 
 
-#Checking the interview for a single analyst
-interview = interview_graph.invoke({"analyst": analysts[0], "messages": messages, "max_num_turns": 2}, thread)
+final_state = research_assistant_graph.get_state(thread)
+report = final_state.values.get('final_report')
+print(f"\n\n Report completed: \n{report}")
+save_markdown(report)
+# final_state = research_assistant_graph.get_state(thread)
+# analysts = final_state.values.get("analysts")
 
-generated_report_section = interview['sections'][0]
+# print("\n\n\t\t***** FINAL ANALYSTS *****\n")
+# for analyst in analysts:
+#     print(analyst.persona)
 
-save_markdown(generated_report_section)
 
-print(f"Finished interview with the section: \n\n{generated_report_section}")
+# conduct_interview_message = HumanMessage(f"So you said you were writing an article on {topic}?")
+# messages = [conduct_interview_message]
+
+
+# #Checking the interview for a single analyst
+# interview = interview_graph.invoke({"analyst": analysts[0], "messages": messages, "max_num_turns": 2}, thread)
+
+# generated_report_section = interview['sections'][0]
+
+# save_markdown(generated_report_section)
+
+# print(f"Finished interview with the section: \n\n{generated_report_section}")
 

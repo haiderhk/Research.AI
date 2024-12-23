@@ -1,7 +1,7 @@
 from initialize_groq import llm
 from utils import should_continue_condition, route_messages_condition
-from schemas import GenerateAnalystsState, Perspectives, InterviewState, SearchQuery
-from prompts import analyst_instructions, question_instructions, search_instructions, answer_instructions, section_writer_instructions
+from schemas import GenerateAnalystsState, Perspectives, InterviewState, SearchQuery, ResearchGraphState
+from prompts import analyst_instructions, question_instructions, search_instructions, answer_instructions, section_writer_instructions, report_writer_instructions, intro_conclusion_instructions
 
 from langgraph.graph import END
 from langchain_community.tools import TavilySearchResults
@@ -73,7 +73,7 @@ def search_web(state: InterviewState):
         return {"context": [formatted_search_docs]}
     except Exception as e:
         print("Unable to query the web at the moment...", e)
-        return {"context": None}
+        return {"context": ["No information"]}
 
 
 def search_wikipedia(state: InterviewState):
@@ -93,7 +93,7 @@ def search_wikipedia(state: InterviewState):
         return {"context": [formatted_search_docs]} 
     except Exception as e:
         print("Unable to reach wikipedia at the moment...", e)
-        return {"context": None}
+        return {"context": ["No Information"]}
 
 
 
@@ -134,3 +134,62 @@ def write_section(state: InterviewState):
 
     return {"sections": [section.content]}
     
+
+
+def write_report(state: ResearchGraphState):
+    sections = state["sections"]
+    topic = state["topic"]
+
+    formatted_str_sections = "\n\n".join([f"{section}" for section in sections])
+
+    system_message = SystemMessage(content = report_writer_instructions.format(topic = topic, context = formatted_str_sections))
+    human_message = HumanMessage("Write a report based on these memos.")
+    report = llm.invoke([system_message] + [human_message])
+
+    return {"content": report.content}
+
+
+def write_introduction(state: ResearchGraphState):
+    sections = state["sections"]
+    topic = state["topic"]
+
+    formatted_str_sections = "\n\n".join([f"{section}" for section in sections])
+
+    instructions = intro_conclusion_instructions.format(topic = topic, formatted_str_sections = formatted_str_sections)
+    human_message = HumanMessage("Write the report introduction")
+
+    intro = llm.invoke([instructions] + [human_message])
+    return {"introduction": intro.content}
+
+
+def write_conclusion(state: ResearchGraphState):
+    sections = state["sections"]
+    topic = state["topic"]
+
+    formatted_str_sections = "\n\n".join([f"{section}" for section in sections])
+
+    instructions = intro_conclusion_instructions.format(topic = topic, formatted_str_sections = formatted_str_sections)
+    human_message = HumanMessage("Write the report conclusion")
+
+    conclusion = llm.invoke([instructions] + [human_message])
+    return {"introduction": conclusion.content}
+
+
+def finalize_report(state: ResearchGraphState):
+    """ Combine all reports """
+    # Save full final report
+    content = state["content"]
+    if content.startswith("## Insights"):
+        content = content.strip("## Insights")
+    if "## Sources" in content:
+        try:
+            content, sources = content.split("\n## Sources\n")
+        except:
+            sources = None
+    else:
+        sources = None
+
+    final_report = state["introduction"] + "\n\n---\n\n" + content + "\n\n---\n\n" + state["conclusion"]
+    if sources is not None:
+        final_report += "\n\n## Sources\n" + sources
+    return {"final_report": final_report}

@@ -12,7 +12,7 @@ def save_image(graph, path):
         print("Graph Image saved!")
 
 
-def save_markdown(markdown_content: str, filename: str = "assets/single_section_example.md"):
+def save_markdown(markdown_content: str, filename: str = "assets/report.md"):
     """
     Save markdown content to a file.
     
@@ -30,7 +30,7 @@ def should_continue_condition(state: GenerateAnalystsState):
     human_analyst_feedback = state.get("human_analyst_feedback", None)
 
     if human_analyst_feedback:
-        return "create_analysts"
+        return "Create Analysts"
     else:
         END
 
@@ -53,5 +53,6 @@ def route_messages_condition(state: InterviewState, name: str = "expert"):
         return "Save Interview"
     
     return "Ask Question"
+
 
 
