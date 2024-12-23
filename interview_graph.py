@@ -21,7 +21,7 @@ builder.add_edge("Ask Question", "Search Web")
 builder.add_edge("Ask Question", "Search Wikipedia")
 builder.add_edge("Search Web", "Answer Question")
 builder.add_edge("Search Wikipedia", "Answer Question")
-builder.add_conditional_edges("Answer Question", route_messages_condition)
+builder.add_conditional_edges("Answer Question", route_messages_condition, ["Ask Question", "Save Interview"])
 builder.add_edge("Save Interview", "Write Section")
 builder.add_edge("Write Section", END)
 
