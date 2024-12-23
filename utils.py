@@ -6,8 +6,8 @@ from langchain_core.messages import AIMessage
 from schemas import GenerateAnalystsState, InterviewState
 
 
-def save_image(graph):
-    with open("assets/human-in-the-loop.png", "wb") as fout:
+def save_image(graph, path):
+    with open(path, "wb") as fout:
         fout.write(graph.get_graph().draw_mermaid_png())
         print("Graph Image saved!")
 
@@ -35,7 +35,7 @@ def route_messages_condition(state: InterviewState, name: str = "expert"):
         return "Save Interview"
     
     last_question = messages[-2]
-    
+
     if "Thank you for your help" in last_question.content:
         return "Save Interview"
     

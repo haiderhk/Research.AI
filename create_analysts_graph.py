@@ -18,7 +18,10 @@ builder.add_conditional_edges("Human Feedback", should_continue_condition)
 
 memory = MemorySaver()
 
-graph = builder.compile(interrupt_before=["Human Feedback"], checkpointer=memory)
+create_analysts_graph = builder.compile(interrupt_before=["Human Feedback"], checkpointer=memory)
+
+
+
 
 # save_image(graph)
 

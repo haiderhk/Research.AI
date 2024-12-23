@@ -1,11 +1,12 @@
 from initialize_groq import llm
-from prompts import analyst_instructions, question_instructions, search_instructions
+from utils import should_continue_condition, route_messages_condition
 from schemas import GenerateAnalystsState, Perspectives, InterviewState, SearchQuery
+from prompts import analyst_instructions, question_instructions, search_instructions, answer_instructions, section_writer_instructions
 
 from langgraph.graph import END
 from langchain_community.tools import TavilySearchResults
 from langchain_community.document_loaders import WikipediaLoader
-from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_core.messages import SystemMessage, HumanMessage, get_buffer_string
 
 tavily_search = TavilySearchResults(max_results=3)
 
@@ -38,14 +39,7 @@ def human_feedback(state: GenerateAnalystsState):
     pass
 
 
-def should_continue_condition(state: GenerateAnalystsState):
-    """Return the next node to execute based on human feedback"""
-    human_analyst_feedback = state.get("human_analyst_feedback", None)
 
-    if human_analyst_feedback:
-        return "create_analysts"
-    else:
-        END
 
 
 def generate_question(state: InterviewState):
@@ -95,3 +89,44 @@ def search_wikipedia(state: InterviewState):
     )
 
     return {"context": [formatted_search_docs]} 
+
+
+
+def generate_answer(state: InterviewState):
+    """Node to answer the analyst question"""
+
+    analyst = state["analyst"]
+    messages = state["messages"]
+    context = state["context"]
+
+    system_message = SystemMessage(content = answer_instructions.format(goals = analyst, context = context))
+    answer = llm.invoke([system_message] + messages)
+    answer.name = "expert"
+
+    return {"messages": [answer]}
+
+
+def save_interview(state: InterviewState):
+    """Save the interview transcript"""
+
+    messages = state["messages"]
+
+    # Convert the interview to a string
+    interview = get_buffer_string(messages)
+
+    return {"interview": interview}
+
+
+
+def write_section(state: InterviewState):
+    interview = state["interview"]
+    context = state["context"]
+    analyst = state["analyst"]
+
+    system_message = SystemMessage(content = section_writer_instructions.format(focus = analyst.description))
+    human_message = HumanMessage(content = f"Use this source to write your section: {context}")
+
+    section = llm.invoke([system_message] + [human_message])
+
+    return {"sections": [section.content]}
+    
