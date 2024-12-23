@@ -1,6 +1,6 @@
 from initialize_groq import llm
-from prompts import analyst_instructions
-from schemas import GenerateAnalystsState, Perspectives
+from prompts import analyst_instructions, question_instructions
+from schemas import GenerateAnalystsState, Perspectives, InterviewState
 
 from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.graph import END
@@ -43,3 +43,18 @@ def should_continue_condition(state: GenerateAnalystsState):
     else:
         END
 
+
+def generate_question(state: InterviewState):
+    """Node to generate a question for the analyst to ask"""
+
+    analyst = state["analyst"]
+    messages = state["messages"]
+
+    system_message = SystemMessage(question_instructions.format(goals = analyst.persona))
+    question = llm.invoke([system_message] + messages)
+
+    return {"messages": question}
+
+
+
+    
