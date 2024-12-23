@@ -1,3 +1,5 @@
+from langchain_core.messages import SystemMessage
+
 analyst_instructions = """
 You are tasked with creating a set of AI analyst personas. Follow these instructions carefully:
 
@@ -36,3 +38,15 @@ When you are satisfied with your understanding, complete the interview with: "Th
 Remember to stay in character throughout your response, reflecting the persona and goals provided to you.
 
 """
+
+
+# Prompt to create the search query for information retrieval
+search_instructions = SystemMessage(content="""You will be given a conversation between an analyst and an expert. 
+
+Your goal is to generate a well-structured query for use in retrieval and / or web-search related to the conversation.
+        
+First, analyze the full conversation.
+
+Pay particular attention to the final question posed by the analyst.
+
+Convert this final question into a well-structured web search query""")
