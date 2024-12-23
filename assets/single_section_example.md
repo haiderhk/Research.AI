@@ -1,15 +1,29 @@
 Here is the generated report section:
 
-## The Future of AI Agents in Blockchain and Crypto
+## The Future of AI Agents and Their Impact on Work
 
 ### Summary
 
-The development of AI agents within the blockchain space is revolutionizing the industry. With a particular interest in decentralized applications and smart contracts, these agents are being integrated into various platforms to enhance user experiences and automate tasks. For instance, Virtuals Protocol on Coinbase's Base blockchain allows for the creation and co-ownership of AI agents, focusing on applications in gaming and entertainment. This technology enables the development of AI-driven virtual influencers and interactive NFTs that autonomously engage with audiences across various platforms. The role of AI agents in crypto is expected to continue growing, with applications in crypto-native AI agents that use large language models for interaction and perform tasks like on-chain analyses, contextual replies on social media, and trading.
+The advent of AI agents is set to revolutionize the future of work by 2025. These agents, capable of taking on increasingly human-like roles, will not only change the way we work but also create new cultural norms, especially in the workplace. With the ability to complete complex tasks, AI agents will move beyond simply finding information to executing tasks autonomously. The collaboration between AI agents and humans will transform the future of work, making it more efficient, innovative, and productive.
+
+1. The third wave of AI, known as agentic AI, will primarily augment human capabilities, with humans taking on roles similar to chiefs of staff who coordinate and manage teams of AI agents.
+2. The future of work will require professionals to understand AI capabilities and limitations, learn to delegate effectively to AI agents, and develop new competencies in orchestrating human-AI collaborations.
+3. The relationship between humans and robots will change, becoming closely integrated in several aspects of life, displacing some workers while creating opportunities for new jobs in other sectors.
 
 ### Sources
 
-[1] https://www.coingecko.com/learn/what-are-crypto-ai-agents
-[2] https://www.kucoin.com/learn/web3/what-are-ai-agents-in-crypto-and-top-projects
-[3] https://support.bitrue.com/hc/en-001/articles/41241685296281-What-are-AI-Agents-in-Crypto-Exploring-Their-Role-in-Blockchain
-[4] https://en.wikipedia.org/wiki/Generative_artificial_intelligence
-[5] https://en.wikipedia.org/wiki/Cryptocurrency
+1. [Future of AI Agents 2025 - Salesforce](https://www.salesforce.com/news/stories/future-of-ai-agents-2025/)
+
+2. [How AI agents will transform the future of work](https://www.infoworld.com/article/3611465/how-ai-agents-will-transform-the-future-of-work.html)
+
+3. [The third wave of AI is here](https://www.forbes.com/sites/bernardmarr/2024/11/15/the-third-wave-of-ai-is-here-why-agentic-ai-will-transform-the-way-we-work/)
+
+4. [AI Takeover](https://en.wikipedia.org/wiki/AI_takeover)
+
+5. [Artificial Intelligence](https://en.wikipedia.org/wiki/Artificial_intelligence)
+
+6. [Electric Field Calculator](https://calculator.academy/electric-field-calculator/)
+
+7. [Electric Field of a Point Charge](https://www.calctool.org/electromagnetism/electric-field-of-a-point-charge/)
+
+8. [Calculate the Magnitude of the Electric Field](https://www.vaia.com/en-us/textbooks/physics/college-physics-1-edition/chapter-7/problem-5-calculate-the-magnitude-of-the-electric-field-200-/)

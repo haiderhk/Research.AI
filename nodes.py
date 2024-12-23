@@ -63,17 +63,17 @@ def search_web(state: InterviewState):
 
     try:
         search_docs = tavily_search.invoke(search_query.search_query)
+        formatted_search_docs = "\n\n---\n\n".join(
+            [
+                f'<Document href="{doc["url"]}"/>\n{doc["content"]}\n</Document>'
+                for doc in search_docs
+            ]
+        )
+
+        return {"context": [formatted_search_docs]}
     except Exception as e:
         print("Unable to query the web at the moment...", e)
-
-    formatted_search_docs = "\n\n---\n\n".join(
-        [
-            f'<Document href="{doc["url"]}"/>\n{doc["content"]}\n</Document>'
-            for doc in search_docs
-        ]
-    )
-
-    return {"context": [formatted_search_docs]}
+        return {"context": None}
 
 
 def search_wikipedia(state: InterviewState):
@@ -83,17 +83,17 @@ def search_wikipedia(state: InterviewState):
     search_query = structured_llm.invoke([search_instructions] + state["messages"])
     try:
         search_docs = WikipediaLoader(query = search_query.search_query, load_max_docs=2).load()
+        formatted_search_docs = "\n\n---\n\n".join(
+            [
+                f'<Document source="{doc.metadata["source"]}" page="{doc.metadata.get("page", "")}"/>\n{doc.page_content}\n</Document>'
+                for doc in search_docs
+            ]
+        )
+
+        return {"context": [formatted_search_docs]} 
     except Exception as e:
         print("Unable to reach wikipedia at the moment...", e)
-
-    formatted_search_docs = "\n\n---\n\n".join(
-        [
-            f'<Document source="{doc.metadata["source"]}" page="{doc.metadata.get("page", "")}"/>\n{doc.page_content}\n</Document>'
-            for doc in search_docs
-        ]
-    )
-
-    return {"context": [formatted_search_docs]} 
+        return {"context": None}
 
 
 

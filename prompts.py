@@ -115,7 +115,7 @@ c. Sources (### header)
 6. In the Sources section:
 - Include all sources used in your report
 - Provide full links to relevant websites or specific document paths
-- Separate each source by a newline. Use two spaces at the end of each line to create a newline in Markdown.
+- Separate each source by a newline. Use TWO spaces at the end of each line to create a newline in Markdown.
 - It will look like:
 
 ### Sources
