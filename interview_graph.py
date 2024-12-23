@@ -1,6 +1,6 @@
 from schemas import InterviewState
 from utils import save_image, route_messages_condition
-from nodes import generate_question, generate_answer, search_web, search_wikipedia, write_section
+from nodes import generate_question, generate_answer, search_web, search_wikipedia, write_section, save_interview
 
 
 from langgraph.graph import START, END, StateGraph
@@ -12,6 +12,7 @@ builder.add_node("Ask Question", generate_question)
 builder.add_node("Search Web", search_web)
 builder.add_node("Search Wikipedia", search_wikipedia)
 builder.add_node("Answer Question", generate_answer)
+builder.add_node("Save Interview", save_interview)
 builder.add_node("Write Section", write_section)
 
 

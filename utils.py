@@ -12,6 +12,19 @@ def save_image(graph, path):
         print("Graph Image saved!")
 
 
+def save_markdown(markdown_content: str, filename: str = "assets/single_section_example.md"):
+    """
+    Save markdown content to a file.
+    
+    Args:
+        markdown_content: The markdown string to save
+        filename: Name of the output file (default: output.md)
+    """
+    with open(filename, 'w') as f:
+        f.write(markdown_content)
+    print(f"Markdown saved to: {filename}")
+
+
 def should_continue_condition(state: GenerateAnalystsState):
     """Return the next node to execute based on human feedback"""
     human_analyst_feedback = state.get("human_analyst_feedback", None)
@@ -23,7 +36,7 @@ def should_continue_condition(state: GenerateAnalystsState):
 
 
 def route_messages_condition(state: InterviewState, name: str = "expert"):
-    messages = state["messsages"]
+    messages = state["messages"]
     max_num_turns = state.get("max_num_turns", 2)
 
     num_responses = 0
@@ -40,3 +53,5 @@ def route_messages_condition(state: InterviewState, name: str = "expert"):
         return "Save Interview"
     
     return "Ask Question"
+
+
