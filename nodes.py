@@ -61,7 +61,10 @@ def search_web(state: InterviewState):
     structured_llm = llm.with_structured_output(SearchQuery)
     search_query = structured_llm.invoke([search_instructions] + state["messages"])
 
-    search_docs = tavily_search.invoke(search_query.search_query)
+    try:
+        search_docs = tavily_search.invoke(search_query.search_query)
+    except Exception as e:
+        print("Unable to query the web at the moment...", e)
 
     formatted_search_docs = "\n\n---\n\n".join(
         [
@@ -78,8 +81,10 @@ def search_wikipedia(state: InterviewState):
 
     structured_llm = llm.with_structured_output(SearchQuery)
     search_query = structured_llm.invoke([search_instructions] + state["messages"])
-
-    search_docs = WikipediaLoader(query = search_query.search_query, load_max_docs=2).load()
+    try:
+        search_docs = WikipediaLoader(query = search_query.search_query, load_max_docs=2).load()
+    except Exception as e:
+        print("Unable to reach wikipedia at the moment...", e)
 
     formatted_search_docs = "\n\n---\n\n".join(
         [
@@ -119,7 +124,6 @@ def save_interview(state: InterviewState):
 
 
 def write_section(state: InterviewState):
-    interview = state["interview"]
     context = state["context"]
     analyst = state["analyst"]
 
