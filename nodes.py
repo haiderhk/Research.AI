@@ -172,7 +172,7 @@ def write_conclusion(state: ResearchGraphState):
     human_message = HumanMessage("Write the report conclusion")
 
     conclusion = llm.invoke([instructions] + [human_message])
-    return {"introduction": conclusion.content}
+    return {"conclusion": conclusion.content}
 
 
 def finalize_report(state: ResearchGraphState):
