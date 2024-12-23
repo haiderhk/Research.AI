@@ -1,6 +1,8 @@
-from typing import List
-from typing_extensions import TypedDict
+import operator
+from typing import List, Annotated
 from pydantic import BaseModel, Field
+from typing_extensions import TypedDict
+from langgraph.graph.message import MessagesState
 
 
 
@@ -27,3 +29,15 @@ class GenerateAnalystsState(TypedDict):
     max_analysts: int
     human_analyst_feedback: str #Human feedback for human-in-the-loop
     analysts: List[Analyst]
+
+
+class InterviewState(MessagesState):
+    max_num_turns: int
+    context: Annotated[List, operator.add] # The external information retrieved
+    analyst: Analyst
+    interview: str # Interview transcript
+    sections: list # For Send()
+
+class SearchQuery(BaseModel):
+    search_query: str = Field(None, description = "Search query for retrieval")
+

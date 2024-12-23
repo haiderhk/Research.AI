@@ -1,4 +1,4 @@
-from groq import llm
+from initialize_groq import llm
 from prompts import analyst_instructions
 from schemas import GenerateAnalystsState, Perspectives
 
@@ -23,6 +23,7 @@ def create_analysts(state: GenerateAnalystsState):
     human_message  = HumanMessage("Generate the list of analysts.")
 
     analysts = structured_llm.invoke([system_message] + [human_message])
+    
 
     return {"analysts": analysts.analysts}
 
