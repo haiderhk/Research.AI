@@ -12,6 +12,7 @@ class ArxivExtraction:
         self.file_path = FILE_PATH
         self.pdfs_folder = DOWNLOAD_FOLDER
 
+
     def extract_from_arxiv(self, search_query="cat:cs.AI"):
         url = f'http://export.arxiv.org/api/query?search_query={search_query}&max_results={self.max_results}'
         response = requests.get(url)
