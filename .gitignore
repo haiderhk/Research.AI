@@ -170,5 +170,6 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 old_stuff/
+notebooks/
 pdf_files/
 arxiv_dataset.json
